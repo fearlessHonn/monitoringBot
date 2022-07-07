@@ -2,11 +2,12 @@ from translate import translator
 
 
 class Article:
-    def __init__(self, headline, url, date, text='', translate=False):
+    def __init__(self, headline, url, date, category, text='', translate=False):
         self.headline = headline
         self.url = url
         self.date = date
         self.text = text
+        self.category = category
 
         if 'https://' not in self.url:
             self.url = 'https://www.haitilibre.com' + self.url
