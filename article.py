@@ -22,9 +22,15 @@ class Article:
         return f'{self.headline} \n{self.text} \n{self.url} \n{self.date} \n\n'
 
     def to_html(self):
-        return f"""<a href='{self.url}'><b>{self.headline}</b></a></br>
-                    {self.text}{'</br>' if self.text != '' else ''}
-                    {self.date.strftime('%d.%m.%Y')}</br></br></br>"""
+        if self.text != '':
+            return f"""{self.date.strftime('%d.%m.%Y')}</br>
+                    <a href='{self.url}'><b>{self.headline}</b></a></br>
+                    {self.text}</br>
+                    </br></br>"""
+        else:
+            return f"""{self.date.strftime('%d.%m.%Y')}</br>
+                        <a href='{self.url}'><b>{self.headline}</b></a></br>
+                        </br></br>"""
 
     def to_german(self):
         if self.text != '':

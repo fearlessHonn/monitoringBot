@@ -1,8 +1,9 @@
 import streamlit as st
+from search import search
+
 
 st.title('EWBot')
 
-from main import article_objects
 
-for article_object in article_objects:
-    st.write(article_object)
+for article in search(end_date=st.date_input('End date'), translate=st.checkbox('Translate to german')):
+    st.markdown(article.to_html(), unsafe_allow_html=True)
