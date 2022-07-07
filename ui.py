@@ -3,6 +3,8 @@ from search import search
 from translate import translate
 
 
+st.navbar()
+
 st.title('EWBot für die EWBerichtserstattung')
 
 do_translation = False

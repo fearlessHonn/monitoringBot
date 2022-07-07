@@ -11,14 +11,13 @@ class Article:
         self.text = text
         self.category = category
 
-        self.german_version = GermanArticle(self.headline, self.url, self.date, self.category, self.text)
-
         if 'https://' not in self.url:
             self.url = 'https://www.haitilibre.com' + self.url
 
         if self.text == 'Read more on iciHaiti.com...':
             self.text = ''
 
+        self.german_version = GermanArticle(self.headline, self.url, self.date, self.category, self.text)
         self._full_article = 'N/A'
 
     def __str__(self):
