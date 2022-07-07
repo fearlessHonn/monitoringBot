@@ -27,13 +27,15 @@ while search:
 
         if date != '':
             date = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M:%S')
-            article_objects.append(Article(headline, url, date, text))
+            print(headline)
+            if 'Diaspora Covid-19 : Daily Bulletin' not in headline and 'Haiti - Sports' not in headline:
+                article_objects.append(Article(headline, url, date, text, translate=True))
             if date < end_date:
                 search = False
                 break
         else:
             date = article_objects[-1].date
-
+            article_objects.append(Article(headline, url, date, text, translate=True))
 
 with open('output.html', 'w+') as file:
     output = '<html><body>\n'
