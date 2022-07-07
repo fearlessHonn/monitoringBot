@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from translate import translator
+from translation import translator
 
 
 class Article:

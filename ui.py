@@ -1,9 +1,7 @@
 import streamlit as st
 from search import search
-from translate import translate
+from translation import translate
 
-
-st.navbar()
 
 st.title('EWBot für die EWBerichtserstattung')
 

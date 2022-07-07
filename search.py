@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 from article import Article
 import datetime
-import streamlit as st
 
 
 def search(end_date: datetime.date):
