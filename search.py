@@ -5,7 +5,6 @@ import datetime
 import streamlit as st
 
 
-@st.cache
 def search(end_date: datetime.date):
     finished = False
     article_objects = []
@@ -39,19 +38,3 @@ def search(end_date: datetime.date):
                 article_objects.append(Article(headline, url, date, text))
 
     return article_objects
-
-
-"""if __name__ == '__main__':
-    with open('output.html', 'w+') as file:
-        output = '<html><body>\n'
-        for art in article_objects:
-            output += art.to_html()
-        output += '</body></html>'
-
-        file.write(output)"""
-
-
-if __name__ == '__main__':
-    arts = search(datetime.datetime.today().date())
-    print(arts[0].url)
-    arts[0].fetch_article()
