@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from translation import translator
+import datetime
 
 
 class Article:
@@ -45,8 +46,9 @@ class Article:
                 self._full_article = full[:-3].strip()
 
             elif 'icihaiti' in self.url:
-                full = soup.find('span', class_='date').find_parent()
-                full = str(full).split('/ iciHaiti')[0]
+                full = soup.find('span', class_='date')
+                self.date = datetime.datetime.strptime(full.text, '%d/%m/%Y %H:%M:%S')
+                full = str(full.find_parent()).split('/ iciHaiti')[0]
                 full = full.split('</table>')[-1]
                 self._full_article = full[:-3].strip()
 

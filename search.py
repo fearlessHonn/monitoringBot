@@ -2,8 +2,10 @@ from bs4 import BeautifulSoup
 import requests
 from article import Article
 import datetime
+import streamlit as st
 
 
+@st.cache
 def search(end_date: datetime.date):
     finished = False
     article_objects = []
@@ -27,13 +29,16 @@ def search(end_date: datetime.date):
 
             if date != '':
                 date = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M:%S')
-                if category not in ['Sports', 'Diaspora Covid-19']:
-                    article_objects.append(Article(headline, url, date, category, text))
+                article_objects.append(Article(headline, url, date, category, text))
                 if date.date() < end_date:
                     finished = True
                     break
             else:
                 date = article_objects[-1].date
-                article_objects.append(Article(headline, url, date, text))
+                article_objects.append(Article(headline, url, date, category, text))
 
     return article_objects
+
+
+if __name__ == '__main__':
+    search(datetime.datetime.strptime('01/07/2022', '%d/%m/%Y').date())

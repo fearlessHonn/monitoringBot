@@ -5,21 +5,31 @@ from translation import translate
 
 st.title('EWBot für die EWBerichtserstattung')
 
-do_translation = False
 do_translation = st.checkbox('Auf deutsch übersetzen')
-if not do_translation:
-    load = st.checkbox('Vollständige Artikel laden')
-    for article in search(end_date=st.date_input('Enddatum')):
-        st.markdown(article.to_html(), unsafe_allow_html=True)
-        if load:
-            with st.expander('Vollständigen Artikel lesen'):
-                st.markdown(article.full_article, unsafe_allow_html=True)
+load = st.checkbox('Vollständige Artikel laden')
 
-else:
-    load = st.checkbox('Vollständige Artikel laden')
-    for article in search(end_date=st.date_input('Enddatum')):
-        st.markdown(article.german_version.to_html(), unsafe_allow_html=True)
-        if load:
-            with st.expander('Vollständigen Artikel lesen'):
-                st.markdown(translate(article.full_article), unsafe_allow_html=True)
+articles = search(end_date=st.date_input('Enddatum'))
+categories = {a.category for a in articles}
+
+with st.sidebar:
+    st.header('Kategorien')
+    if not do_translation:
+        checkboxes = {c: st.checkbox(c, value=True) for c in categories}
+    else:
+        checkboxes = {c: st.checkbox(translate(c), value=True) for c in categories}
+
+for article in articles:
+    if checkboxes[article.category]:
+        if not do_translation:
+            st.markdown(article.to_html(), unsafe_allow_html=True)
+            if load:
+                with st.expander('Vollständigen Artikel lesen'):
+                    st.markdown(article.full_article, unsafe_allow_html=True)
+
+        else:
+            st.markdown(article.german_version.to_html(), unsafe_allow_html=True)
+            if load:
+                with st.expander('Vollständigen Artikel lesen'):
+                    st.markdown(translate(article.full_article), unsafe_allow_html=True)
+
 
