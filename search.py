@@ -6,7 +6,14 @@ import datetime
 def search(end_date: datetime.date):
     haitian_times_articles = haitian_times_search(end_date)
     haiti_libre_articles = haiti_libre_search(end_date)
-    return haitian_times_articles + haiti_libre_articles
+
+    all_articles = haitian_times_articles + haiti_libre_articles
+    return sort_articles(all_articles)
+
+
+def sort_articles(articles: list):
+    articles.sort(key=lambda x: x.date, reverse=True)
+    return articles
 
 
 if __name__ == '__main__':
