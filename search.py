@@ -21,7 +21,7 @@ def search(end_date: datetime.date):
         articles = soup.find_all('span', class_='titre16color')
 
         for a in articles:
-            headline = a.find_parents(limit=3)[2].find_all('td', class_='text')[0].find('span').text
+            headline = a.find_parents(limit=3)[2].find_all('td', class_='text')[0].find('span', class_='titre16color').text.replace('$', '\$', 1)
             text = a.find_parents(limit=3)[2].find_all('td', class_='text')[1].text
             url = a.find_parents(limit=3)[2].find_all('td', class_='text')[-1].find('a')['href']
             date = a.fetchNextSiblings()[1].text
@@ -41,4 +41,4 @@ def search(end_date: datetime.date):
 
 
 if __name__ == '__main__':
-    search(datetime.datetime.strptime('01/07/2022', '%d/%m/%Y').date())
+    search(datetime.datetime.strptime('09/07/2022', '%d/%m/%Y').date())
