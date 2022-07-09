@@ -67,9 +67,11 @@ class GermanArticle:
 
     def to_german(self):
         if self.text != '':
-            self.text = translator.translate(self.text, dest='de').text
-
-        self.headline = translator.translate(self.headline, dest='de').text
+            a, b, c = translator.translate([self.headline, self.category, self.text], dest='de')
+            self.headline, self.category, self.text = a.text, b.text, c.text
+        else:
+            a, b = translator.translate([self.headline, self.category], dest='de')
+            self.headline, self.category = a.text, b.text
 
     def to_html(self):
         if self.text != '':
