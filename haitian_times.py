@@ -3,9 +3,31 @@ import requests
 from article import Article
 import datetime
 import streamlit as st
+from text_checking import check_text
 
 
-def search(end_date: datetime.date):
+class HaitianTimesArticle(Article):
+    @property
+    def full_article(self):
+        if self._full_article == 'N/A':
+            html = requests.get(self.url).text
+            soup = BeautifulSoup(html, 'html.parser')
+
+            self.category = soup.find('a', rel='category tag').text
+
+            if 'To view the full story' in html:
+                summary = soup.find('div', class_='article-summary')
+                self._full_article = summary.find('p').text + ' (Overview)'
+
+            else:
+                content = soup.find('div', class_='entry-content')
+                self._full_article = '\n'.join([para.text for para in content.find_all('p')])
+
+        self.german_version.translate_full_article()
+        return check_text(self._full_article)
+
+@st.cache(allow_output_mutation=True)
+def haitian_times_search(end_date: datetime.date):
     finished = False
     article_objects = []
     page_number = 0
@@ -26,18 +48,10 @@ def search(end_date: datetime.date):
             category = 'Haitian Times'
             text = ''
 
-            print(headline)
-            print(date)
-
-            # Jun. 28, 2022
             date = datetime.datetime.strptime(date, '%b. %d, %Y')
-            article_objects.append(Article(headline, url, date, category, text))
+            article_objects.append(HaitianTimesArticle(headline, url, date, category, text))
             if date.date() < end_date:
                 finished = True
                 break
 
     return article_objects
-
-
-if __name__ == '__main__':
-    search(datetime.datetime.strptime('09/07/2022', '%d/%m/%Y').date())
