@@ -49,9 +49,11 @@ def haitian_times_search(end_date: datetime.date):
             text = ''
 
             date = datetime.datetime.strptime(date, '%b. %d, %Y')
-            article_objects.append(HaitianTimesArticle(headline, url, date, category, text))
             if date.date() < end_date:
                 finished = True
                 break
+
+            article_objects.append(HaitianTimesArticle(headline, url, date, category, text))
+
 
     return article_objects

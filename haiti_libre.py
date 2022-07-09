@@ -56,10 +56,11 @@ def haiti_libre_search(end_date: datetime.date):
 
             if date != '':
                 date = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M:%S')
-                article_objects.append(HaitiLibreArticle(headline, url, date, category, text))
                 if date.date() < end_date:
                     finished = True
                     break
+                article_objects.append(HaitiLibreArticle(headline, url, date, category, text))
+
             else:
                 date = article_objects[-1].date
                 article_objects.append(HaitiLibreArticle(headline, url, date, category, text))
