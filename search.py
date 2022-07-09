@@ -5,7 +5,7 @@ import datetime
 import streamlit as st
 
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def search(end_date: datetime.date):
     finished = False
     article_objects = []
