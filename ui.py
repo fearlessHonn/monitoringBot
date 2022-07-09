@@ -1,9 +1,14 @@
 import streamlit as st
 from search import search
+from httpcore._exceptions import ReadError
 
 
 articles = search(end_date=st.date_input('Enddatum'))
-categories = {(a.category, b.category) for a, b in zip(articles, [c.german_version for c in articles])}
+
+try:
+    categories = {(a.category, b.category) for a, b in zip(articles, [c.german_version for c in articles])}
+except ReadError:
+    raise st.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
 
 
 st.title('EWBot für die EWBerichtserstattung')
