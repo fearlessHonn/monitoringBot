@@ -29,6 +29,7 @@ class HaitiLibreArticle(Article):
             content = date.find_parent().__str__().replace('/ HaitiLibre', '/ iciHaiti', 1).split('/ iciHaiti')[0].split('</table>')[-1]
             self._full_article = content[:-3].strip()
 
+        self.german_version.translate_full_article()
         return check_text(self._full_article)
 
 
