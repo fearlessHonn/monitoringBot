@@ -32,22 +32,25 @@ class Article:
     @property
     def german_version(self):
         if self._german_version is None:
-            self._german_version = GermanArticle(self.headline, self.url, self.date, self.category, self.text)
+            self._german_version = GermanArticle(self.headline, self.url, self.date, self.category, self.text, self)
 
         return self._german_version
 
 
 class GermanArticle(Article):
-    def __init__(self, headline, url, date, category, text):
+    def __init__(self, headline, url, date, category, text, parent_article):
         super().__init__(headline, url, date, category, text)
+
+        self.parent_article = parent_article
 
         t1, t2, t3 = translator.translate([self.headline, self.category, self.text], dest='de')
         self.headline, self.category, self.text = t1.text, t2.text, t3.text
-
-        print(self.headline, self.category, self.text)
 
         if self._full_article != 'N/A':
             self.translate_full_article()
 
     def translate_full_article(self):
+        if self._full_article == 'N/A':
+            self._full_article = self.parent_article.full_article
+
         self._full_article = translator.translate(self._full_article, dest='de').text
