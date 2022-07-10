@@ -1,3 +1,3 @@
 def check_text(text: str):
-    return text.replace('$', '\$')
+    return text.replace('$', '\$').replace(r'\\$', '\$')
 

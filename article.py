@@ -44,6 +44,8 @@ class GermanArticle(Article):
         t1, t2, t3 = translator.translate([self.headline, self.category, self.text], dest='de')
         self.headline, self.category, self.text = t1.text, t2.text, t3.text
 
+        print(self.headline, self.category, self.text)
+
         if self._full_article != 'N/A':
             self.translate_full_article()
 
