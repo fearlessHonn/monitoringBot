@@ -16,8 +16,10 @@ class HaitianTimesArticle(Article):
             self.category = soup.find('a', rel='category tag').text
 
             if 'To view the full story' in html:
-                summary = soup.find('div', class_='article-summary')
-                self._full_article = summary.find('p').text + ' (Overview)'
+                if summary := soup.find('div', class_='article-summary'):
+                    self._full_article = summary.find('p').text + ' (Overview)'
+                else:
+                    self._full_article = 'Nicht verfügbar.'
 
             else:
                 content = soup.find('div', class_='entry-content')
@@ -25,6 +27,7 @@ class HaitianTimesArticle(Article):
 
         self.german_version.translate_full_article()
         return check_text(self._full_article)
+
 
 @st.cache(allow_output_mutation=True)
 def haitian_times_search(end_date: datetime.date):
@@ -54,6 +57,5 @@ def haitian_times_search(end_date: datetime.date):
                 break
 
             article_objects.append(HaitianTimesArticle(headline, url, date, category, text))
-
 
     return article_objects
