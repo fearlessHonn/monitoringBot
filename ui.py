@@ -9,6 +9,7 @@ try:
     categories = {(a.category, b.category) for a, b in zip(articles, [c.german_version for c in articles])}
 except ReadError:
     st.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.')
+    quit()
 
 
 st.title('EWBot für die EWBerichtserstattung')
@@ -20,9 +21,9 @@ with st.sidebar:
     language = st.radio('Sprache der Artikel', ('englisch', 'deutsch'))
     st.subheader('Kategorien')
     if language == 'englisch':
-        checkboxes = {c[0]: st.checkbox(c[0], value=True) for c in categories}
+        checkboxes = {c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories}
     elif language == 'deutsch':
-        checkboxes = {c[0]: st.checkbox(c[1], value=True) for c in categories}
+        checkboxes = {c[0]: st.checkbox(c[1], value=True, key=c[1]) for c in categories}
 
 for article in articles:
     if checkboxes[article.category]:
