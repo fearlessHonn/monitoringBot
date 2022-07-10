@@ -27,7 +27,7 @@ with st.sidebar:
 
 for article in articles:
     if checkboxes[article.category]:
-        article = article.german_version if language == 'german' else article
+        article = article.german_version if language == 'deutsch' else article
 
         st.markdown(article.to_html(), unsafe_allow_html=True)
         if load:
