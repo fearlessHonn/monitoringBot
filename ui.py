@@ -23,15 +23,26 @@ with st.sidebar:
     st.subheader('Kategorien')
     checkboxes = {}
     if language == 'englisch':
-        checkboxes.update({c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories})
+        if checkboxes:
+            for cb in checkboxes.values():
+                del cb
+
+        checkboxes = {c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories}
     elif language == 'deutsch':
-        checkboxes.update({c[0]: st.checkbox(c[1], value=True, key=c[1]) for c in categories})
+        if checkboxes:
+            for cb in checkboxes.values():
+                del cb
+
+        checkboxes = {c[0]: st.checkbox(c[1], value=True, key=c[1]) for c in categories}
 
 for article in articles:
     if checkboxes[article.category]:
         article = article.german_version if language == 'deutsch' else article
 
-        st.markdown(article.to_html(), unsafe_allow_html=True)
+        col1, col2 = st.columns((10, 1))
+        col1.markdown(article.to_html(), unsafe_allow_html=True)
         if load:
-            with st.expander('Vollständigen Artikel lesen'):
-                st.markdown(article.full_article, unsafe_allow_html=True)
+            with col1.expander('Vollständigen Artikel lesen'):
+                col1.markdown(article.full_article, unsafe_allow_html=True)
+
+
