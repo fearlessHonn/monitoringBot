@@ -25,10 +25,10 @@ with st.sidebar:
     # checkboxes = {c[0]: st.checkbox(c[1], value=True) for c in categories}
 
 for article in articles:
-    if checkboxes[article.category]:
-        article = article.german_version if language == 'deutsch' else article
+    #if checkboxes[article.category]:
+    article = article.german_version if language == 'deutsch' else article
 
-        st.markdown(article.to_html(), unsafe_allow_html=True)
-        if load:
-            with st.expander('Vollständigen Artikel lesen'):
-                st.markdown(article.full_article, unsafe_allow_html=True)
+    st.markdown(article.to_html(), unsafe_allow_html=True)
+    if load:
+        with st.expander('Vollständigen Artikel lesen'):
+            st.markdown(article.full_article, unsafe_allow_html=True)
