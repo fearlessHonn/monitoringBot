@@ -21,19 +21,8 @@ load = st.checkbox('Vollständige Artikel laden')
 with st.sidebar:
     language = st.radio('Sprache der Artikel', ('englisch', 'deutsch'))
     st.subheader('Kategorien')
-    checkboxes = {}
-    if language == 'englisch':
-        if checkboxes:
-            for cb in checkboxes.values():
-                del cb
 
-        checkboxes = {c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories}
-    elif language == 'deutsch':
-        if checkboxes:
-            for cb in checkboxes.values():
-                del cb
-
-        checkboxes = {c[0]: st.checkbox(c[1], value=True, key=c[1]) for c in categories}
+    checkboxes = {c[0]: st.checkbox(c[1], value=True) for c in categories}
 
 for article in articles:
     if checkboxes[article.category]:
