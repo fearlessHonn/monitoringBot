@@ -22,7 +22,7 @@ with st.sidebar:
     language = st.radio('Sprache der Artikel', ('englisch', 'deutsch'))
     st.subheader('Kategorien')
 
-    checkboxes = {c[0]: st.checkbox(c[1], value=True) for c in categories}
+    # checkboxes = {c[0]: st.checkbox(c[1], value=True) for c in categories}
 
 for article in articles:
     if checkboxes[article.category]:
