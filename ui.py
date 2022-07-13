@@ -23,9 +23,15 @@ with st.sidebar:
     st.subheader('Kategorien')
     checkboxes = {}
     if language == 'englisch':
-        checkboxes.update({c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories})
+        if checkboxes:
+            for cb in checkboxes.values():
+                del cb
+
+        checkboxes = {c[0]: st.checkbox(c[0], value=True, key=c[0]) for c in categories}
     elif language == 'deutsch':
-        checkboxes.update({c[0]: st.checkbox(c[1], value=True, key=c[1]) for c in categories})
+        if checkboxes:
+            for cb in checkboxes.values():
+                del cb
 
 for article in articles:
     if checkboxes[article.category]:
