@@ -33,7 +33,6 @@ class HaitiLibreArticle(Article):
         return check_text(self._full_article)
 
 
-@st.cache(allow_output_mutation=True)
 def haiti_libre_search(end_date: datetime.date):
     finished = False
     article_objects = []
