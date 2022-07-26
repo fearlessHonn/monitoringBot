@@ -52,7 +52,8 @@ def haiti_libre_search(end_date: datetime.date):
             text = a.find_parents(limit=3)[2].find_all('td', class_='text')[1].text
             url = a.find_parents(limit=3)[2].find_all('td', class_='text')[-1].find('a')['href']
             date = a.fetchNextSiblings()[1].text
-            category = headline.split(' - ')[1].split(':')[0].strip()
+            # category = headline.split(' - ')[1].split(':')[0].strip()
+            category = 'HaitiLibre'
 
             if date != '':
                 date = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M:%S')
