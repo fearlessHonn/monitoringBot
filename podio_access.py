@@ -1,4 +1,4 @@
-from pypodio2 import api
+from podio import auth
 from datetime import datetime, timedelta
 import os
 from config import Settings
@@ -22,8 +22,8 @@ if app_token is None:
     exit(1)
 
 
-def create_monitoring_entry(title, date, content, link, categories, preview_text, location=None):
-    client = api.OAuthAppClient(client_id, client_secret, app_id, app_token)
+def create_monitoring_entry(title: str, date: datetime, content: str, link: str, categories: list[str], preview_text: str, location=None):
+    client = auth.OAuthAppClient(client_id, client_secret, app_id, app_token)
     preview_text = preview_text if preview_text != '' else content
     embed_id = client.Embed.create({"url": link})['embed_id']
     item_id = client.Item.create(app_id, attributes={"fields": {"titel": title, "datum-der-veroffentlichung": {
@@ -35,7 +35,7 @@ def create_monitoring_entry(title, date, content, link, categories, preview_text
 
 
 def get_last_date():
-    client = api.OAuthAppClient(client_id, client_secret, app_id, app_token)
+    client = auth.OAuthAppClient(client_id, client_secret, app_id, app_token)
     items = client.Item.filter(app_id,
                                attributes={"limit": 1, "sort_by": "datum-der-veroffentlichung", "sort_desc": True})
     try:
@@ -45,14 +45,14 @@ def get_last_date():
 
 
 def updated_status(message):
-    client = api.OAuthClient(client_id, client_secret, PODIO_EMAIL, PODIO_PASSWORD)
+    client = auth.OAuthClient(client_id, client_secret, PODIO_EMAIL, PODIO_PASSWORD)
     client.Status.create(space_id, attributes={"value": message,
                                               "embed_url": "https://podio.com/api-test-o13qqzccw0/monitoring/apps/monitoring"})
     print(message)
 
 
 def delete_outdated_articles():
-    client = api.OAuthAppClient(client_id, client_secret, app_id, app_token)
+    client = auth.OAuthAppClient(client_id, client_secret, app_id, app_token)
     items = client.Item.filter(app_id, attributes={"limit": 500, "filters":
         {"datum-der-veroffentlichung":
              {"from": datetime(2023, 1, 1).strftime("%Y-%m-%d"),
@@ -66,7 +66,7 @@ def delete_outdated_articles():
 
 
 def get_config():
-    client = api.OAuthAppClient(client_id, client_secret, app_id, app_token)
+    client = auth.OAuthAppClient(client_id, client_secret, app_id, app_token)
     description = client.Application.find(app_id)['config']['description']
     refresh = re.search(r"Aktualisierungsintervall \(Stunden\): (\d+)", description)
     post_status = re.search(r"Status bei Aktualisierung schreiben: (Ja|Nein)", description)
