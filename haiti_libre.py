@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 from article import Article
 import datetime
-import streamlit as st
 from text_checking import check_text
 
 
