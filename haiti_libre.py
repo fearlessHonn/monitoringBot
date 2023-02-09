@@ -29,11 +29,10 @@ class HaitiLibreArticle(Article):
             content = date.find_parent().__str__().replace('/ HaitiLibre', '/ iciHaiti', 1).split('/ iciHaiti')[0].split('</table>')[-1]
             self._full_article = content[:-3].strip()
 
-        self.german_version.translate_full_article()
         return check_text(self._full_article)
 
 
-def haiti_libre_search(end_date: datetime.date):
+def haiti_libre_search(end_date: datetime.date, max_num: int = 10000):
     finished = False
     article_objects = []
     page_number = 0
@@ -47,30 +46,34 @@ def haiti_libre_search(end_date: datetime.date):
 
         articles = soup.find_all('span', class_='titre16color')
 
-        for a in articles:
+        for i, a in enumerate(articles):
             headline = a.find_parents(limit=3)[2].find_all('td', class_='text')[0].find('span', class_='titre16color').text
             text = a.find_parents(limit=3)[2].find_all('td', class_='text')[1].text
             url = a.find_parents(limit=3)[2].find_all('td', class_='text')[-1].find('a')['href']
             date = a.fetchNextSiblings()[1].text
-            # category = headline.split(' - ')[1].split(':')[0].strip()
-            category = 'HaitiLibre'
+            categories = ['Haite Libre'] if not 'iciHaiti' in headline else ['iciHaiti']
+            try:
+                categories.append(headline.split(' - ')[1].split(':')[0].strip())
+                headline = headline.split(' - ')[1].split(':')[1].strip()
+            except IndexError:
+                pass
 
             if date != '':
                 date = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M:%S')
-                if date.date() < end_date:
+                if date.date() < end_date or i >= max_num:
                     finished = True
                     break
-                article_objects.append(HaitiLibreArticle(headline, url, date, category, text))
+                article_objects.append(HaitiLibreArticle(headline, url, date, categories, text))
 
             else:
-                date = article_objects[-1].date
-                article_objects.append(HaitiLibreArticle(headline, url, date, category, text))
+                try:
+                    date = article_objects[-1].date
+                except IndexError:
+                    continue
 
+                article_objects.append(HaitiLibreArticle(headline, url, date, categories, text))
     return article_objects
 
 
 if __name__ == '__main__':
-    arts = haiti_libre_search(datetime.date(2022, 7, 9))
-    for a in arts:
-        print(a.headline)
-        b = a.full_article
+    arts = haiti_libre_search(datetime.date(2023, 1, 2), 20)
