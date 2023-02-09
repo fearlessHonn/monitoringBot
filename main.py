@@ -7,7 +7,7 @@ from config import Settings
 
 settings = Settings()
 while True:
-    if time.time() % (settings.refresh_interval * 60 * 60) <= 10 or 1:
+    if time.time() % (settings.refresh_interval * 60 * 60) <= 10:
         last_refresh = get_last_date()
         articles = haiti_libre_search(last_refresh.date())
 
