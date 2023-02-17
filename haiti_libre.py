@@ -41,7 +41,7 @@ def haiti_libre_search(end_date: datetime.date, max_num: int = 10000):
         url = f'https://www.haitilibre.com/en/flash-infos-en-{page_number}.html'
 
         html = requests.get(url).text
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, 'html5lib')
 
         articles = soup.find_all('span', class_='titre16color')
 
