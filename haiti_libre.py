@@ -19,7 +19,7 @@ class HaitiLibreArticle(Article):
     def full_article(self):
         if self._full_article == 'N/A':
             html = requests.get(self.url).text
-            soup = BeautifulSoup(html, 'html.parser')
+            soup = BeautifulSoup(html, 'html5lib')
 
             date = soup.find('span', class_='date')
             if date == '':
